@@ -33,7 +33,7 @@ yarn seed
 
 # API Endpoints:
 
-- Fetch, create, update stock levels, delete book(s) from the bookstore database
+- Fetch, create, update stock levels, delete a book from the bookstore database
 
 # Cron job:
 
