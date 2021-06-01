@@ -14,15 +14,15 @@ yarn dev
 
 yarn test
 
-# migrations
+# Migrations
 
 yarn migrate
 
-# rolllback
+# Rollback
 
 yarn unmigrate
 
-# seed database
+# Seed database
 
 yarn seed
 
