@@ -9,18 +9,12 @@ router.get("/:bookstoreId", stockController.getBooksStock);
 router.get("/:bookstoreId/:ISBN", stockController.getBookStock);
 
 // @route: add book to a particular bookstore
-router.post("/add", authenticateJWT, (req, res) => {
-  stockController.createStock;
-});
+router.post("/add", authenticateJWT, stockController.createStock);
 
 // @route: delete book from a particular bookstore
-router.delete("/delete/:stockId", authenticateJWT, (req, res) => {
-  stockController.deleteStock;
-});
+router.delete("/delete/:stockId", authenticateJWT, stockController.deleteStock);
 
 // @route: update book quantity in a particular bookstore
-router.patch("/update", authenticateJWT, (req, res) => {
-  stockController.updateStock;
-});
+router.patch("/update", authenticateJWT, stockController.updateStock);
 
 module.exports = router;

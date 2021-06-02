@@ -1,7 +1,7 @@
 const userService = require("../services/user.service");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-// TODO: add req.body validation and JWT and login controller
+// TODO: add req.body validation
 
 //Controller handles requests, deleguates to service, and communicates errors.
 exports.createUser = async (req, res) => {
@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
       //Generate an access token
       const accessToken = jwt.sign(
         {
-          username: authenticatedUser.firstName,
+          username: authenticatedUser.first_name,
         },
         process.env.ACCESS_TOKEN_SECRET
       );
@@ -45,7 +45,7 @@ exports.loginUser = async (req, res) => {
       if (accessToken) {
         res.status(200).json({
           message: "User successfully authenticated",
-          authenticatedUser,
+          // authenticatedUser,
           accessToken,
         });
       } else {
