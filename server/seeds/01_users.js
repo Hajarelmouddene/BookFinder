@@ -1,29 +1,37 @@
+const bcrypt = require("bcrypt");
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex("user")
     .del()
     .then(function () {
+      //hash password before inserting in db; needed during login in jest tests.
+      const salt = bcrypt.genSaltSync(10);
+      if (!salt) throw Error("Something went wrong with bcrypt");
+      const hashedPassword = bcrypt.hashSync("Tara2082dn5%123-!", salt);
+      if (!hashedPassword)
+        throw Error("Something went wrong hashing the password");
+
       // Inserts seed entries
       return knex("user").insert([
-        //better to avoid adding id, can run into issue,
         {
-          first_name: "Hajar",
-          last_name: "El Mouddene",
-          email: "hajarmouddjene@gmail.com",
-          password: "hajar123-!",
+          first_name: "Tara",
+          last_name: "Mills",
+          email: "taramills@gmail.com",
+          password: hashedPassword,
         },
-        {
-          first_name: "Sara",
-          last_name: "Simons",
-          email: "sarasimons@gmail.com",
-          password: "sldkfra-829!",
-        },
-        {
-          first_name: "Matthew",
-          last_name: "Mcmaster",
-          email: "matmacmaster@gmail.com",
-          password: "flf03f03-f!djd",
-        },
+        // {
+        //   first_name: "Sara",
+        //   last_name: "Simons",
+        //   email: "sarasimons@gmail.com",
+        //   password: "sldkfra-829!",
+        // },
+        // {
+        //   first_name: "Matthew",
+        //   last_name: "Mcmaster",
+        //   email: "matmacmaster@gmail.com",
+        //   password: "flf03f03-f!djd",
+        // },
       ]);
     });
 };

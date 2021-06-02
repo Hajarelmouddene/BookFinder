@@ -1,5 +1,4 @@
 const db = require("../db/db");
-// TODO: add login model
 
 class UserModel {
   async createUser(firstName, lastName, email, hashedPassword) {

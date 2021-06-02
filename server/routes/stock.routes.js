@@ -3,10 +3,14 @@ const stockController = require("../controllers/stock.controller");
 const authenticateJWT = require("../middlewares/auth.middleware");
 
 // @route: get all books from a particular bookstore
-router.get("/:bookstoreId", stockController.getBooksStock);
+router.get("/:bookstoreId", authenticateJWT, stockController.getBooksStock);
 
 // @route: get a specific book from a particular bookstore
-router.get("/:bookstoreId/:ISBN", stockController.getBookStock);
+router.get(
+  "/:bookstoreId/:ISBN",
+  authenticateJWT,
+  stockController.getBookStock
+);
 
 // @route: add book to a particular bookstore
 router.post("/add", authenticateJWT, stockController.createStock);
