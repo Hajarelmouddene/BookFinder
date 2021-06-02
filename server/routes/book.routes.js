@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const bookController = require("../controllers/book.controller");
+const authenticateJWT = require("../middlewares/auth.middleware");
 
-router.post("/add", bookController.createBook);
-
-//TODO: need to implement JWT access here
+router.post("/add", authenticateJWT, (req, res) => {
+  bookController.createBook;
+});
 
 module.exports = router;

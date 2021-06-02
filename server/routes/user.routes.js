@@ -7,6 +7,4 @@ router.post("/register", userController.createUser);
 // @route: user login
 TODO: router.post("/login", userController.loginUser);
 
-//TODO: need to implement JWT access here
-
 module.exports = router;
