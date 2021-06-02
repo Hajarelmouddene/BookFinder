@@ -1,4 +1,4 @@
-# Bookfinder What to build:
+# Bookfinder:
 
 - Bookfinder is an inventory system for multiple bookstores containing the same copies of the same book, and notifying when one or a set of books are out of stock in a specific bookstore.
 
@@ -14,25 +14,26 @@ yarn dev
 
 yarn test
 
-# migrations
+# Migrations
 
 yarn migrate
 
-# rolllback
+# Rollback
 
 yarn unmigrate
 
-# seed database
+# Seed database
 
 yarn seed
 
 # Stack:
 
-- Node, Jest, Postgres, and Knex.js to create migrations, db structure, and seed files.
+- Node, Jest, Postgres, and Knex.js to create migrations, db structure, and seed files. 
+- React 
 
 # API Endpoints:
 
-- Fetch, create, update stock levels, delete book(s) from the bookstore database
+- Fetch, create, update stock levels, delete a book from the bookstore database
 
 # Cron job:
 
