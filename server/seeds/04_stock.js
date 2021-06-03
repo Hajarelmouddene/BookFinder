@@ -6,7 +6,7 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex("stock").insert([
         {
-          isbn: 1001001001,
+          isbn: 1001001001012,
           bookstore_id: 1,
           quantity: 200,
           status: "in stock",

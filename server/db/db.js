@@ -1,11 +1,9 @@
 const knex = require("knex");
-const knexConfig = require("../knexfile").development;
+require("dotenv").config();
+const environment = process.env.NODE_ENV;
+const knexConfig = require("../knexfile")[environment];
 
-// Todo in production: use dependency injection to create knew instance so database
-//access can be mocked for tests
-
-// Todo in production: don't access knexfile.development directly but decice with
-// env vars which config to use.
+// TODO in production: use dependency injection to create new instance so db access can be mocked for tests
 const db = knex(knexConfig);
 
 module.exports = db;

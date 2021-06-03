@@ -6,7 +6,7 @@ exports.up = function (knex) {
      */
     table.increments("stock_id");
     table.integer("bookstore_id").unsigned().notNullable();
-    table.integer("isbn").unsigned().notNullable();
+    table.bigInteger("isbn").unsigned().notNullable();
     table
       .foreign("bookstore_id")
       .references("bookstore_id")

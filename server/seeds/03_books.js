@@ -6,17 +6,17 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex("book").insert([
         {
-          isbn: 1001001001,
+          isbn: 1001001001012,
           book_name: "First book",
           author_name: "Troy Smith",
         },
         {
-          isbn: 1001001002,
+          isbn: 1001001001013,
           book_name: "Second book",
           author_name: "John Doe",
         },
         {
-          isbn: 1001001003,
+          isbn: 100100100104,
           book_name: "Third book",
           author_name: "Sara Crooks",
         },
