@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
-const db = require("../db/db");
+const updateStockStatus = require("../jobs/stock_status.jobs");
+const cron = require("node-cron");
 
 //TODO: fix open handle issue regarding cron.schedule; jest not exiting after tests are completed.
 
@@ -13,11 +14,15 @@ beforeAll((done) => {
       email: "taramills@gmail.com",
       password: "Tara2082dn5%123-!",
     })
+    .expect(200)
     .end((err, response) => {
+      if (err) return done(err);
       token = response.body.accessToken;
-      done();
+      return done();
     });
 });
+
+//add mock data
 
 describe("Add a stock (creation of a book inside a bookstore) ", () => {
   it("should create a new stock", async () => {
@@ -62,7 +67,7 @@ describe("Add a stock (creation of a book inside a bookstore) ", () => {
     expect(res.statusCode).toEqual(400);
   });
 
-  it("should not create a new stock when a stock entry exists for a book in a bookstore", async () => {
+  it("should not create a new stock when a stock exists for a book in a bookstore", async () => {
     const res = await request(app)
       .post("/stock/add")
       .send({
@@ -76,8 +81,8 @@ describe("Add a stock (creation of a book inside a bookstore) ", () => {
   });
 });
 
-describe("update a book's stock level to be out of stock", () => {
-  it("should update stock quantity to 0 and status to out of stock", async () => {
+describe("Update a book's stock level to be out of stock", () => {
+  it("should update stock quantity to 0", async () => {
     const res = await request(app)
       .patch("/stock/update")
       .send({
@@ -103,5 +108,49 @@ describe("update a book's stock level to be out of stock", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.statusCode).toEqual(400);
+  });
+});
+
+// jest.mock mocks the node-cron module with jest. The second argument specifies an explicit module factory
+// that runs instead of running node cron-with Jest's auto-mocked version.
+//jest.fn() creates a mock function
+jest.mock("node-cron", () => {
+  return {
+    schedule: jest.fn(),
+  };
+});
+
+describe("Update a book's inventory status", () => {
+  it("should run the check status job", async () => {
+    // const logSpy = jest.spyOn(console, "log");
+    cron.schedule.mockImplementationOnce();
+    // async (frequency, callback) => await callback()
+    // uppateStockStatus()
+    // expect(logSpy).toBeCalledWith("DO SOME DATA PROCESSING");
+
+    expect(cron.schedule).toBeCalledWith("* * * * * *", expect.any(Function));
+  });
+
+  it("should update status to out of stock for stock with quantity 0", async () => {
+    const res = await request(app)
+      .get("/stock/1/1001001001")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.stock).toBeInstanceOf(Object);
+    expect(res.body.stock.stock_id).toEqual(1);
+    expect(res.body.stock.quantity).toEqual(0);
+    expect(res.body.stock.status).toEqual("out of stock");
+  });
+  it("should not update status to out of stock for stock with quantity higher than 0", async () => {
+    const res = await request(app)
+      .get("/stock/2/1001001002")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.stock).toBeInstanceOf(Object);
+    expect(res.body.stock.stock_id).toEqual(2);
+    expect(res.body.stock.quantity).toEqual(10);
+    expect(res.body.stock.status).toEqual("in stock");
   });
 });

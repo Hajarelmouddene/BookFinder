@@ -1,15 +1,20 @@
 const stockService = require("../services/stock.service");
-// TODO: add req.body validation
+const { validationResult } = require("express-validator");
 
 //Controller handles requests, deleguates to service, and communicates errors.
 
 exports.getBooksStock = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Create stock, pass req.body to service layer
-    const books = await stockService.getBooksStock(req.params.bookstoreId);
+    const stock = await stockService.getBooksStock(req.params.bookstoreId);
     res.status(200).json({
       message: `Books successfully retrieved for bookstore id ${req.params.bookstoreId}`,
-      books,
+      stock,
     });
   } catch (err) {
     if (err.code === 400) {
@@ -28,15 +33,20 @@ exports.getBooksStock = async (req, res) => {
 };
 
 exports.getBookStock = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Create stock, pass req.body to service layer
-    const book = await stockService.getBookStock(
+    const stock = await stockService.getBookStock(
       req.params.bookstoreId,
       req.params.ISBN
     );
     res.status(200).json({
       message: `Book ISBN ${req.params.ISBN} successfully retrieved for bookstore id ${req.params.bookstoreId}`,
-      book,
+      stock,
     });
   } catch (err) {
     if (err.code === 400) {
@@ -55,6 +65,11 @@ exports.getBookStock = async (req, res) => {
 };
 
 exports.createStock = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Create stock, pass req.body to service layer
     const newStock = await stockService.createStock(req.body);
@@ -84,6 +99,11 @@ exports.createStock = async (req, res) => {
 };
 
 exports.deleteStock = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Delete stock, pass req.body to service layer
     const deletedStock = await stockService.deleteStock(req.params.stockId);
@@ -107,6 +127,11 @@ exports.deleteStock = async (req, res) => {
 };
 
 exports.updateStock = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Update stock, pass req.body to service layer
     const updatedStock = await stockService.updateStock(req.body);
@@ -130,6 +155,3 @@ exports.updateStock = async (req, res) => {
     }
   }
 };
-
-//TODO: when using dependency injection export an instance of StockController
-// module.exports = new StockController();

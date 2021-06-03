@@ -1,15 +1,15 @@
 const db = require("../db/db");
 
 class BookstoreModel {
-  async createBookstore(name, phoneNumber, address) {
+  async createBookstore(bookstoreName, phoneNumber, address) {
     //destructure newBookstore (promise)
     const [newBookstore] = await db("bookstore")
       .insert({
-        name: name,
+        bookstore_name: bookstoreName,
         phone_number: phoneNumber,
         address: address,
       })
-      .returning(["bookstore_id", "name", "phone_number", "address"]);
+      .returning(["bookstore_id", "bookstore_name", "phone_number", "address"]);
 
     return newBookstore;
   }

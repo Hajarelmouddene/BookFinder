@@ -2,7 +2,7 @@ const bookstoreModel = require("../models/bookstore.model");
 class BookstoreService {
   async createBookstore(bookstoreDto) {
     //destructure req.body passed from bookstore controller to bookstore service
-    const { name, phoneNumber, address } = bookstoreDto;
+    const { bookstoreName, phoneNumber, address } = bookstoreDto;
     //check if bookstore exists in bookstore table, if it does throw error.
     const bookstore = await bookstoreModel.findBookstoreByPhoneNumber(
       phoneNumber
@@ -15,7 +15,7 @@ class BookstoreService {
       throw err;
     }
     // pass req.body to bookstoreModel; return (promise)
-    return bookstoreModel.createBookstore(name, phoneNumber, address);
+    return bookstoreModel.createBookstore(bookstoreName, phoneNumber, address);
   }
 }
 

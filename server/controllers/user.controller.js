@@ -1,10 +1,16 @@
 const userService = require("../services/user.service");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-// TODO: add req.body validation
+const { validationResult } = require("express-validator");
 
 //Controller handles requests, deleguates to service, and communicates errors.
 exports.createUser = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     //Create User, pass req.body to service layer
     const newUser = await userService.createUser(req.body);
@@ -29,6 +35,11 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Create User, pass req.body to service layer
     const authenticatedUser = await userService.loginUser(req.body);
@@ -36,16 +47,13 @@ exports.loginUser = async (req, res) => {
     if (authenticatedUser) {
       //Generate an access token
       const accessToken = jwt.sign(
-        {
-          username: authenticatedUser.first_name,
-        },
+        authenticatedUser,
         process.env.ACCESS_TOKEN_SECRET
       );
       // respond with generated access token
       if (accessToken) {
         res.status(200).json({
           message: "User successfully authenticated",
-          // authenticatedUser,
           accessToken,
         });
       } else {
@@ -71,6 +79,3 @@ exports.loginUser = async (req, res) => {
     }
   }
 };
-
-//TODO: when using dependency injection export an instance of UserController
-// module.exports = new UserController();

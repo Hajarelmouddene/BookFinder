@@ -1,8 +1,13 @@
 const bookService = require("../services/book.service");
-// TODO: add req.body validation
+const { validationResult } = require("express-validator");
 
 //Controller handles requests, deleguates to service, and communicates errors.
 exports.createBook = async (req, res) => {
+  // Finds the validation errors in this request and wraps them in an object
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //Create book, pass req.body to service layer
     const newBook = await bookService.createBook(req.body);
@@ -11,6 +16,7 @@ exports.createBook = async (req, res) => {
       book: newBook,
     });
   } catch (err) {
+    console.log(err);
     if (err.code === 400) {
       res.status(400).json({
         status: 400,
@@ -25,6 +31,3 @@ exports.createBook = async (req, res) => {
     }
   }
 };
-
-//TODO: when using dependency injection export an instance of UserController
-// module.exports = new BookController();

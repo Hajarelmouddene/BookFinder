@@ -8,7 +8,7 @@ const authenticateJWT = (req, res, next) => {
       if (err) {
         return res.sendStatus(403);
       }
-      req.user = user;
+      req.body.user = user;
       next();
     });
   } else {

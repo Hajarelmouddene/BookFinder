@@ -9,7 +9,7 @@
     "unmigrate": "knex migrate:rollback",
     "migrate:reset": "knex migrate:rollback && yarn run migrate && yarn run seed",
     "seed": "knex seed:run",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --testTimeout=10000",
+    "test": "cross-env NODE_ENV=test jest --watchAll --detectOpenHandles --testTimeout=10000 ",
     "pretest": "cross-env NODE_ENV=test yarn run migrate:reset"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-validator": "^6.11.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.6",
     "morgan": "^1.10.0",

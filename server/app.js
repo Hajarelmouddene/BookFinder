@@ -9,8 +9,8 @@ const updateStockStatus = require("./jobs/stock_status.jobs");
 
 const app = express();
 
-//cron schedule runs every minute
-cron.schedule("* * * * * *", () => {
+// cron schedule runs every minute
+cron.schedule("* * * * *", () => {
   updateStockStatus();
 });
 

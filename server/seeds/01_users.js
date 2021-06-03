@@ -4,11 +4,11 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex("user")
     .del()
-    .then(function () {
+    .then(async function () {
       //hash password before inserting in db; needed during login in jest tests.
-      const salt = bcrypt.genSaltSync(10);
+      const salt = await bcrypt.genSalt(10);
       if (!salt) throw Error("Something went wrong with bcrypt");
-      const hashedPassword = bcrypt.hashSync("Tara2082dn5%123-!", salt);
+      const hashedPassword = await bcrypt.hash("Tara2082dn5%123-!", salt);
       if (!hashedPassword)
         throw Error("Something went wrong hashing the password");
 
